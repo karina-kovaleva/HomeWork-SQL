@@ -6,22 +6,22 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>deeplink://user/1</string>
+			<string>user/1</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>deeplink://user/1</string>
+				<string>deeplink</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>deeplink://user/2</string>
+			<string>user/2</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>deeplink://user/2</string>
+				<string>deeplink</string>
 			</array>
 		</dict>
 	</array>

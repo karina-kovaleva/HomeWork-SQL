@@ -21,6 +21,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let users = [User(id: 1, name: "Karina", surname: "Kovaleva"), User(id: 2, name: "Petya", surname: "Petrov")]
     let databasePath = documentDir?.appendingPathExtension("database.sqlite").relativePath
     
+    var newUsers: [User] = []
     var database: OpaquePointer?
     
     var tableView: UITableView = {
@@ -50,6 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         createTable()
 //        insertUser(User(id: 1, name: "Karina", surname: "Kovaleva"))
         insertUsers(users)
+        query()
     }
     
     func openDatabase() -> OpaquePointer? {
@@ -130,9 +132,8 @@ Name CHAR (255), Surname CHAR (255));
     }
     
     func query() -> [User?] {
-        let queryStatementString = "SELECT * FROM Users"
+        let queryStatementString = "SELECT * FROM Users;"
         var queryStatement: OpaquePointer?
-        var users: [User?] = []
         if sqlite3_prepare_v2(database, queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
              while (sqlite3_step(queryStatement) == SQLITE_ROW) {
                 let id = sqlite3_column_int(queryStatement, 0)
@@ -140,14 +141,15 @@ Name CHAR (255), Surname CHAR (255));
                 let name = String(cString: queryResultName)
                 guard let queryResultSurname = sqlite3_column_text(queryStatement, 2) else { return [nil] }
                 let surname = String(cString: queryResultSurname)
-                users.append(User(id: id, name: name as NSString, surname: surname as NSString))
+                newUsers.append(User(id: id, name: name as NSString, surname: surname as NSString))
             }
         } else {
             let errorMessage = String(cString: sqlite3_errmsg(database))
             print("Query is not prepared \(errorMessage)")
         }
         sqlite3_finalize(queryStatement)
-        return users
+        
+        return newUsers
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

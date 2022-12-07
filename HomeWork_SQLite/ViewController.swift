@@ -19,9 +19,9 @@ let documentDir = try? FileManager.default.url(for: .documentDirectory, in: .use
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let users = [User(id: 1, name: "Karina", surname: "Kovaleva"), User(id: 2, name: "Petya", surname: "Petrov")]
+    var newUsers : [User] = []
     let databasePath = documentDir?.appendingPathExtension("database.sqlite").relativePath
     
-    var newUsers: [User] = []
     var database: OpaquePointer?
     
     var tableView: UITableView = {

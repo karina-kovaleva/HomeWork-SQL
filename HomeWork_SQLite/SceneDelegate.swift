@@ -50,22 +50,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        let vc = ViewController()
-        let cell = TableViewCell()
+        guard let vc = (window?.rootViewController) as? ViewController else { return }
+        vc.newUsers.removeAll()
         guard let postfix = URLContexts.first?.url.lastPathComponent else { return }
         guard let host = URLContexts.first?.url.host() else { return }
-        var users = vc.newUsers
-        var url = host + "/" + postfix
-        
+        let users = vc.query()
+        let url = host + "/" + postfix
         switch url {
         case "user/1":
-            cell.labelForId.text = String(users[0].id)
-            cell.labelForName.text = users[0].name as String?
-            cell.labelForSurname.text = users[0].surname as String?
+            vc.newUsers.append(users[0]!)
+            vc.tableView.reloadData()
         case "user/2":
-            cell.labelForId.text = String(users[1].id)
-            cell.labelForName.text = users[1].name as String?
-            cell.labelForSurname.text = users[1].surname as String?
+            vc.newUsers.append(users[1]!)
+            vc.tableView.reloadData()
         default: break
         }
     }
